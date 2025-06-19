@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marlboro MVC | Official New Jersey Motor Vehicle Commission Site</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <style>
+        /* --- CSS Reset & Global Styles --- */
+        :root {
+            --primary-blue: #003366;
+            --secondary-blue: #005a9c;
+            --light-blue: #e6f2ff;
+            --accent-gold: #f0b429;
+            --dark-gray: #333333;
+            --medium-gray: #666666;
+            --light-gray: #f4f4f4;
+            --border-color: #dddddd;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--dark-gray);
+            background-color: var(--white);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--secondary-blue);
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        img {
+            max-width: 100%;
+        }
+
+        h1, h2, h3 {
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+        }
+        
+        h2 { font-size: 2.2rem; }
+        h3 { font-size: 1.5rem; }
+
+        /* --- Header --- */
+        .site-header {
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--white);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo a {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        .logo a i {
+            color: var(--accent-gold);
+            margin-right: 10px;
+        }
+
+        .header-utils {
+            display: flex;
+            align-items: center;
+        }
+
+        .header-search {
+            position: relative;
+            margin-right: 20px;
+        }
+
+        .header-search input {
+            padding: 8px 12px 8px 35px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .header-search i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--medium-gray);
+        }
+
+        .utility-links a {
+            margin-left: 15px;
+            color: var(--medium-gray);
+            font-weight: 600;
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: var(--primary-blue);
+        }
+
+        /* --- Main Navigation --- */
+        .main-nav {
+            background-color: var(--primary-blue);
+        }
+
+        .main-nav ul {
+            list-style-type: none;
+            display: flex;
+        }
+
+        .main-nav li {
+            position: relative;
+        }
+
+        .main-nav > ul > li > a {
+            display: block;
+            padding: 15px 20px;
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+
+        .main-nav > ul > li > a:hover {
+            background-color: var(--secondary-blue);
+            text-decoration: none;
+        }
+
+        .dropdown-menu {
+            display: block; /* Keep it block for animation */
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: var(--white);
+            border: 1px solid var(--border-color);
+            min-width: 220px;
+            z-index: 1000;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            /* Animation properties */
+            visibility: hidden;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s 0.3s;
+        }
+
+        .dropdown-menu a {
+            color: var(--dark-gray);
+            padding: 12px 20px;
+            display: block;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: var(--light-gray);
+        }
+        
+        /* Show dropdown on hover */
+        .main-nav li:hover > .dropdown-menu {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s 0s;
+        }
+        
+
+        /* --- Hero Section --- */
+        .hero {
+            background-image: linear-gradient(rgba(0, 51, 102, 0.7), rgba(0, 51, 102, 0.7)), url('https://images.unsplash.com/photo-1596796939912-78939c0b16f3?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            color: var(--white);
+            padding: 5rem 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            color: var(--white);
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .service-finder {
+            background-color: var(--white);
+            max-width: 800px;
+            margin: 0 auto;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            text-align: left;
+        }
+
+        .sf-tabs {
+            display: flex;
+            background-color: var(--light-gray);
+            border-radius: 8px 8px 0 0;
+        }
+
+        .sf-tab {
+            padding: 15px 25px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--medium-gray);
+            border-bottom: 3px solid transparent;
+            flex-grow: 1;
+            text-align: center;
+        }
+        
+        .sf-tab.active {
+            color: var(--primary-blue);
+            border-bottom: 3px solid var(--primary-blue);
+            background-color: var(--white);
+        }
+
+        .sf-content {
+            padding: 30px;
+            display: none;
+        }
+        
+        .sf-content.active {
+            display: block;
+        }
+
+        .sf-content p {
+            color: var(--medium-gray);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .sf-search-group {
+            display: flex;
+        }
+
+        .sf-search-group input[type="text"] {
+            flex-grow: 1;
+            padding: 15px;
+            font-size: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 5px 0 0 5px;
+        }
+
+        .sf-search-group button {
+            padding: 15px 25px;
+            font-size: 1rem;
+            background-color: var(--secondary-blue);
+            color: var(--white);
+            border: none;
+            cursor: pointer;
+            border-radius: 0 5px 5px 0;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        
+        .sf-search-group button:hover {
+            background-color: var(--primary-blue);
+        }
+
+        /* --- Sections --- */
+        .page-section {
+            padding: 4rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title h2 {
+            position: relative;
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background-color: var(--accent-gold);
+        }
+
+        /* Popular Services Section */
+        .popular-services {
+            background-color: var(--light-gray);
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .service-card {
+            background-color: var(--white);
+            padding: 2rem;
+            text-align: center;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .service-card .icon {
+            font-size: 3rem;
+            color: var(--secondary-blue);
+            margin-bottom: 1rem;
+        }
+        
+        .service-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0;
+        }
+
+        /* News & Info Sections */
+        .news-info-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+        
+        .news-item {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .news-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .news-date {
+            background-color: var(--light-blue);
+            color: var(--secondary-blue);
+            font-weight: 700;
+            text-align: center;
+            padding: 10px;
+            border-radius: 5px;
+            min-width: 70px;
+            height: fit-content;
+        }
+        .news-date span {
+            display: block;
+        }
+        .news-date .month {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+        .news-date .day {
+            font-size: 1.5rem;
+        }
+        
+        .news-content h3 {
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-box {
+            background-color: var(--light-gray);
+            padding: 2rem;
+            border-radius: 8px;
+        }
+        
+        .info-box ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .info-box li {
+            margin-bottom: 1rem;
+        }
+        
+        .info-box a {
+            font-weight: 600;
+        }
+        
+        .info-box a i {
+            margin-right: 10px;
+        }
+
+        /* --- Footer --- */
+        .site-footer {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            padding: 3rem 0;
+            font-size: 0.9rem;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+
+        .footer-col h4 {
+            color: var(--accent-gold);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-col a {
+            color: #d4e3ff;
+            text-decoration: none;
+        }
+
+        .footer-col a:hover {
+            color: var(--white);
+            text-decoration: underline;
+        }
+        
+        .social-icons a {
+            color: var(--white);
+            font-size: 1.5rem;
+            margin-right: 15px;
+        }
+        .social-icons a:hover {
+            color: var(--accent-gold);
+        }
+
+        .footer-bottom {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--secondary-blue);
+            text-align: center;
+            font-size: 0.8rem;
+            color: #d4e3ff;
+        }
+
+        /* --- Responsive Styles --- */
+        @media (max-width: 992px) {
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .news-info-grid {
+                grid-template-columns: 1fr;
+            }
+            .info-box {
+                margin-top: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h2 { font-size: 1.8rem; }
+            .hero h1 { font-size: 2.2rem; }
+
+            .header-search, .utility-links {
+                display: none;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+            
+            /* Mobile Nav Slide-out Animation */
+            .main-nav {
+                position: fixed;
+                top: 75px; /* Height of header */
+                left: 0;
+                width: 80%;
+                max-width: 300px;
+                height: calc(100vh - 75px);
+                background-color: var(--primary-blue);
+                transform: translateX(-100%);
+                transition: transform 0.4s ease-in-out;
+                z-index: 1000;
+                overflow-y: auto;
+            }
+            
+            .main-nav.active {
+                transform: translateX(0);
+                box-shadow: 5px 0 15px rgba(0,0,0,0.2);
+            }
+            
+            body.nav-open {
+                overflow: hidden;
+            }
+
+            .main-nav ul {
+                flex-direction: column;
+            }
+            
+            .main-nav li a {
+                border-bottom: 1px solid var(--secondary-blue);
+            }
+            
+            .main-nav li {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+            }
+             .main-nav > ul > li > a {
+                 flex-grow: 1;
+             }
+
+            .main-nav li .dropdown-toggle {
+                padding: 15px 20px;
+                cursor: pointer;
+                color: var(--white);
+                font-size: 0.8rem;
+            }
+            .main-nav li .dropdown-toggle .fa-chevron-down {
+                transition: transform 0.3s ease;
+            }
+            .main-nav li .dropdown-toggle.open .fa-chevron-down {
+                transform: rotate(180deg);
+            }
+
+            /* Mobile Sub-menu slide-down */
+            .main-nav .dropdown-menu {
+                position: static;
+                display: block;
+                visibility: visible;
+                opacity: 1;
+                transform: none;
+                
+                width: 100%;
+                max-height: 0;
+                overflow: hidden;
+                
+                background-color: var(--secondary-blue);
+                border: none;
+                box-shadow: none;
+                padding: 0;
+                margin: 0;
+                transition: max-height 0.4s ease-in-out;
+            }
+            .main-nav .dropdown-menu.active {
+                max-height: 500px; /* Adjust as needed */
+            }
+            .main-nav .dropdown-menu a {
+                padding-left: 40px;
+                border-top: 1px solid var(--primary-blue);
+            }
+
+            .hero { padding: 3rem 0; }
+            .sf-tabs { flex-direction: column; }
+            
+            .footer-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="container header-content">
+            <div class="logo">
+                <a href="#">
+                    <i class="fa-solid fa-car-side"></i>
+                    <span>NJ MVC | Marlboro</span>
+                </a>
+            </div>
+
+            <div class="header-utils">
+                <div class="header-search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Search site...">
+                </div>
+                <div class="utility-links">
+                    <a href="#">Locations</a>
+                    <a href="#">Contact Us</a>
+                </div>
+            </div>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <nav class="main-nav" id="mainNav">
+        <div class="container">
+            <ul>
+                <li class="has-dropdown">
+                    <a href="#">Driver Licenses & IDs</a>
+                    <span class="dropdown-toggle" aria-label="Toggle submenu"><i class="fa-solid fa-chevron-down"></i></span>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">REAL ID Information</a></li>
+                        <li><a href="#">Renew Your License</a></li>
+                        <li><a href="#">Get a New License (GDL)</a></li>
+                        <li><a href="#">State IDs</a></li>
+                        <li><a href="#">Update Info</a></li>
+                    </ul>
+                </li>
+                <li class="has-dropdown">
+                    <a href="#">Vehicle Services</a>
+                    <span class="dropdown-toggle" aria-label="Toggle submenu"><i class="fa-solid fa-chevron-down"></i></span>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Renew Registration</a></li>
+                        <li><a href="#">Title & Registration</a></li>
+                        <li><a href="#">License Plates</a></li>
+                        <li><a href="#">Inspections</a></li>
+                        <li><a href="#">Sell a Vehicle</a></li>
+                    </ul>
+                </li>
+                <li class="has-dropdown">
+                    <a href="#">Appointments & Tests</a>
+                    <span class="dropdown-toggle" aria-label="Toggle submenu"><i class="fa-solid fa-chevron-down"></i></span>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Schedule Road Test</a></li>
+                        <li><a href="#">Schedule Knowledge Test</a></li>
+                        <li><a href="#">Make an In-Person Appointment</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">Forms & Manuals</a>
+                </li>
+                <li>
+                    <a href="#">About Us</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>Welcome to the Marlboro MVC</h1>
+                <p>Your official source for New Jersey Motor Vehicle Commission services in Monmouth County. Find services, schedule appointments, and get on the road.</p>
+                
+                <div class="service-finder">
+                    <div class="sf-tabs">
+                        <div class="sf-tab active" data-tab="tab-1">I want to...</div>
+                        <div class="sf-tab" data-tab="tab-2">I'm looking for...</div>
+                    </div>
+                    <div class="sf-content active" id="tab-1">
+                        <p>Find a specific MVC service by keyword.</p>
+                        <div class="sf-search-group">
+                            <input type="text" placeholder="e.g. Renew my license, register a vehicle...">
+                            <button><i class="fa-solid fa-magnifying-glass"></i> Find Service</button>
+                        </div>
+                    </div>
+                    <div class="sf-content" id="tab-2">
+                         <p>Search for forms, manuals, locations, and more.</p>
+                        <div class="sf-search-group">
+                            <input type="text" placeholder="e.g. BA-208, Driver Manual, Marlboro Agency...">
+                            <button><i class="fa-solid fa-magnifying-glass"></i> Search</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="popular-services page-section">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Popular Services</h2>
+                </div>
+                <div class="services-grid">
+                    <a href="#" class="service-card">
+                        <div class="icon"><i class="fa-solid fa-id-card"></i></div>
+                        <h3>Renew License/ID</h3>
+                    </a>
+                    <a href="#" class="service-card">
+                        <div class="icon"><i class="fa-solid fa-car"></i></div>
+                        <h3>Renew Registration</h3>
+                    </a>
+                    <a href="#" class="service-card">
+                        <div class="icon"><i class="fa-solid fa-calendar-check"></i></div>
+                        <h3>Schedule Road Test</h3>
+                    </a>
+                    <a href="#" class="service-card">
+                        <div class="icon"><i class="fa-solid fa-map-location-dot"></i></div>
+                        <h3>Change Address</h3>
+                    </a>
+                     <a href="#" class="service-card">
+                        <div class="icon"><i class="fa-solid fa-star"></i></div>
+                        <h3>REAL ID Info</h3>
+                    </a>
+                    <a href="#" class="service-card">
+                        <div class="icon"><i class="fa-solid fa-list-ol"></i></div>
+                        <h3>Check Surcharges</h3>
+                    </a>
+                     <a href="#" class="service-card">
+                        <div class="icon"><i class="fa-solid fa-file-lines"></i></div>
+                        <h3>Request Driving Record</h3>
+                    </a>
+                     <a href="#" class="service-card">
+                        <div class="icon"><i class="fa-solid fa-vial-circle-check"></i></div>
+                        <h3>Organ Donor Registry</h3>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="news-info page-section">
+            <div class="container">
+                <div class="news-info-grid">
+                    <div class="news-updates">
+                        <div class="section-title" style="text-align: left; margin-bottom: 2rem;">
+                            <h2>News & Announcements</h2>
+                        </div>
+                        <article class="news-item">
+                            <div class="news-date">
+                                <span class="month">OCT</span>
+                                <span class="day">28</span>
+                            </div>
+                            <div class="news-content">
+                                <h3><a href="#">New REAL ID Deadline Approaching: May 7, 2025</a></h3>
+                                <p>Don't wait until the last minute. Ensure your license or ID is REAL ID compliant for domestic air travel. Find out what documents you need.</p>
+                            </div>
+                        </article>
+                        <article class="news-item">
+                            <div class="news-date">
+                                <span class="month">OCT</span>
+                                <span class="day">15</span>
+                            </div>
+                            <div class="news-content">
+                                <h3><a href="#">Marlboro MVC Expands Weekend Hours for Select Services</a></h3>
+                                <p>To better serve our community, we are now offering Saturday appointments for license renewals and new registrations. Book your spot online today.</p>
+                            </div>
+                        </article>
+                         <article class="news-item">
+                            <div class="news-date">
+                                <span class="month">SEP</span>
+                                <span class="day">22</span>
+                            </div>
+                            <div class="news-content">
+                                <h3><a href="#">Online Services Update: Skip the Trip & Save Time!</a></h3>
+                                <p>Over a dozen common transactions can now be completed entirely online, from registration renewals to address changes. See what you can do from home.</p>
+                            </div>
+                        </article>
+                    </div>
+                    <aside class="info-box">
+                        <h3>Driver Resources</h3>
+                        <ul>
+                            <li><a href="#"><i class="fa-solid fa-book-open-reader"></i> NJ Driver Manual</a></li>
+                            <li><a href="#"><i class="fa-solid fa-shield-halved"></i> Approved Driving Schools</a></li>
+                            <li><a href="#"><i class="fa-solid fa-circle-info"></i> Teen Driver Information</a></li>
+                            <li><a href="#"><i class="fa-solid fa-person-military-to-person"></i> Veteran Resources</a></li>
+                            <li><a href="#"><i class="fa-solid fa-file-pdf"></i> Downloadable Forms</a></li>
+                        </ul>
+                    </aside>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>Driver Services</h4>
+                    <ul>
+                        <li><a href="#">License & ID</a></li>
+                        <li><a href="#">Knowledge Test</a></li>
+                        <li><a href="#">Road Test</a></li>
+                        <li><a href="#">REAL ID</a></li>
+                        <li><a href="#">Driver Manual</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Vehicle Services</h4>
+                    <ul>
+                        <li><a href="#">Registration & Title</a></li>
+                        <li><a href="#">License Plates</a></li>
+                        <li><a href="#">Inspections</a></li>
+                        <li><a href="#">Insurance Requirements</a></li>
+                        <li><a href="#">Fees</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">Forms</a></li>
+                        <li><a href="#">Locations & Hours</a></li>
+                        <li><a href="#">Online Services</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>About Marlboro MVC</h4>
+                    <p>123 Main Street<br>Marlboro, NJ 07746</p>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 State of New Jersey, Motor Vehicle Commission. All Rights Reserved. | <a href="#">Privacy Policy</a> | <a href="#">Accessibility</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- Service Finder Tabs ---
+            const tabs = document.querySelectorAll('.sf-tab');
+            const tabContents = document.querySelectorAll('.sf-content');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(item => item.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    tab.classList.add('active');
+                    document.getElementById(tab.dataset.tab).classList.add('active');
+                });
+            });
+
+            // --- Mobile Slide-out Menu ---
+            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+            const mainNav = document.getElementById('mainNav');
+            const body = document.body;
+
+            if (mobileMenuToggle) {
+                mobileMenuToggle.addEventListener('click', () => {
+                    mainNav.classList.toggle('active');
+                    body.classList.toggle('nav-open');
+                });
+            }
+
+            // --- Mobile Dropdown Sub-menus ---
+            const dropdownToggles = document.querySelectorAll('.main-nav .dropdown-toggle');
+            
+            dropdownToggles.forEach(toggle => {
+                toggle.addEventListener('click', (e) => {
+                    // This function should only work on mobile viewports
+                    if (window.innerWidth <= 768) {
+                        e.preventDefault();
+                        const dropdownMenu = toggle.nextElementSibling;
+                        const parentLi = toggle.parentElement;
+
+                        // Close other open menus
+                        parentLi.parentElement.querySelectorAll('.has-dropdown').forEach(li => {
+                            if (li !== parentLi) {
+                                li.querySelector('.dropdown-menu').classList.remove('active');
+                                li.querySelector('.dropdown-toggle').classList.remove('open');
+                            }
+                        });
+
+                        // Toggle the current menu
+                        dropdownMenu.classList.toggle('active');
+                        toggle.classList.toggle('open');
+                    }
+                });
+            });
+        });
+    </script>
+    
+    <!-- EMBEDDED AMAZON CONNECT CHAT WIDGET -->
+    <script type="text/javascript">
+      (function(w, d, x, id){
+        s=d.createElement('script');
+        s.src='https://nf-projectonboarding.my.connect.aws/connectwidget/static/amazon-connect-chat-interface-client.js';
+        s.async=1;
+        s.id=id;
+        d.getElementsByTagName('head')[0].appendChild(s);
+        w[x] =  w[x] || function() { (w[x].ac = w[x].ac || []).push(arguments) };
+      })(window, document, 'amazon_connect', 'de5dab0a-749d-4c1c-a2ce-f03167c1e291');
+      amazon_connect('styles', { iconType: 'CHAT', openChat: { color: '#ffffff', backgroundColor: '#C4D600' }, closeChat: { color: '#ffffff', backgroundColor: '#C4D600'} });
+      amazon_connect('snippetId', 'QVFJREFIaG8zNDMxY1o2YzBOUmhhR09ycENzVWhNWXgzd3ZXalZIbWFFbkY5TVBBTUFFUDVNWHp2VzFEWWF1MXhKMlBWMHRQQUFBQWJqQnNCZ2txaGtpRzl3MEJCd2FnWHpCZEFnRUFNRmdHQ1NxR1NJYjNEUUVIQVRBZUJnbGdoa2dCWlFNRUFTNHdFUVFNd2QyK2FzYXhCRjVIelN6TEFnRVFnQ3ROclNiL2pSYzdkV1JGQ3VUVlBDSWJud0VEMkpUTyt0N3FYczI5R25mdjZqNVdKb2pJbDhidmVmUGY6Om1aSksrQzVXQldwOEtOdVJwa3JIN0hjZFg3TE04MktScnZLc0VNSmt0dXNvY2JUcDBCeUJaRENCcTAzcjMyT2QvcEZrOUF4bk1NYUZLL0pwSGhLV0JXdWoxd2tqUmY4UGxhQUNJMkt5b2hWbWJEcWROZGR5RjNSWExDYXBLWVdKd1B6bm8rU0EwWGk5aGQxc1E4OVppYnhOUHRMeGlhbz0=');
+      amazon_connect('supportedMessagingContentTypes', [ 'text/plain', 'text/markdown', 'application/vnd.amazonaws.connect.message.interactive', 'application/vnd.amazonaws.connect.message.interactive.response' ]);
+    </script>
+
+</body>
+</html>
