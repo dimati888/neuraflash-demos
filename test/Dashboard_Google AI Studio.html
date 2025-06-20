@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service - Console</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #0d335d;
+            --secondary-blue: #0070d2;
+            --light-grey: #f0f2f5;
+            --medium-grey: #707070;
+            --dark-grey: #3e3e3e;
+            --border-color: #dddbda;
+            --realtime-bg: #e6f7f0;
+            --realtime-text: #007d4b;
+            --historical-bg: #0d335d;
+            --historical-text: #ffffff;
+            --shadow: 0 2px 4px rgba(0, 0, 0, 0.07);
+        }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--light-grey);
+            color: var(--dark-grey);
+        }
+
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        /* --- Header --- */
+        .app-header {
+            background-color: #ffffff;
+            border-bottom: 1px solid var(--border-color);
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .header-title {
+            font-size: 16px;
+            font-weight: bold;
+            padding-right: 16px;
+        }
+        
+        .tabs-container {
+            display: flex;
+            align-items: stretch;
+            height: 100%;
+        }
+
+        .tab {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            margin-right: 4px;
+            font-size: 13px;
+            background-color: #fafafa;
+            cursor: pointer;
+        }
+
+        .tab.active {
+            background-color: #ffffff;
+            border-bottom-color: #ffffff;
+            position: relative;
+            top: 1px;
+            font-weight: 600;
+        }
+        
+        .tab i {
+            color: var(--medium-grey);
+        }
+
+        .tab .fa-xmark {
+            font-size: 12px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .search-bar {
+            position: relative;
+        }
+
+        .search-bar input {
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 6px 12px 6px 28px;
+            font-size: 14px;
+            width: 250px;
+        }
+
+        .search-bar .fa-search {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--medium-grey);
+        }
+
+        .header-icons {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            color: var(--medium-grey);
+        }
+
+        .header-icons .fa-user-circle {
+            font-size: 24px;
+            color: #0d47a1;
+        }
+
+        /* --- Sub Header --- */
+        .sub-header {
+            background-color: #ffffff;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border-color);
+            flex-shrink: 0;
+        }
+
+        .sub-header-top {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .sub-header-top .icon-wrapper {
+            background-color: #4caf50;
+            color: white;
+            padding: 8px;
+            border-radius: 4px;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sub-header-top h1 {
+            font-size: 24px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .sub-header-top .id-text {
+            color: var(--medium-grey);
+            font-size: 13px;
+            margin-left: 12px;
+        }
+
+        .sub-header-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .controls-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .all-dropdown {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 20px;
+            font-weight: 500;
+        }
+
+        .controls-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .view-controls button {
+            background-color: transparent;
+            border: 1px solid var(--border-color);
+            padding: 6px 8px;
+            cursor: pointer;
+        }
+        .view-controls .active {
+            background-color: var(--secondary-blue);
+            color: white;
+            border-color: var(--secondary-blue);
+        }
+        .view-controls button:first-child { border-radius: 4px 0 0 4px; }
+        .view-controls button:last-child { border-radius: 0 4px 4px 0; margin-right: 8px; }
+
+        .action-icons i {
+            font-size: 16px;
+            color: var(--medium-grey);
+            margin: 0 4px;
+        }
+
+        .btn {
+            border: 1px solid var(--secondary-blue);
+            background-color: #ffffff;
+            color: var(--secondary-blue);
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .dropdown-filter {
+             border: 1px solid var(--border-color);
+             background-color: #ffffff;
+             padding: 8px 12px;
+             border-radius: 4px;
+             font-size: 14px;
+             cursor: pointer;
+        }
+
+        /* --- Main Content --- */
+        .content-area {
+            flex-grow: 1;
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .tile {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 20px 24px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 120px;
+        }
+
+        .tile-title {
+            font-size: 18px;
+            color: var(--primary-blue);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .tile-value {
+            font-size: 52px;
+            font-weight: 400;
+            color: var(--primary-blue);
+            line-height: 1.2;
+        }
+
+        .tile-subtext {
+            font-size: 14px;
+            color: var(--medium-grey);
+        }
+
+        .tag {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .tag-realtime {
+            background-color: var(--realtime-bg);
+            color: var(--realtime-text);
+        }
+
+        .tag-historical {
+            background-color: var(--historical-bg);
+            color: var(--historical-text);
+        }
+
+        /* --- Footer --- */
+        .app-footer {
+            background-color: #ffffff;
+            border-top: 1px solid var(--border-color);
+            padding: 8px 24px;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            flex-shrink: 0;
+            font-size: 13px;
+        }
+
+        .footer-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--medium-grey);
+            cursor: pointer;
+        }
+        .footer-item i {
+            color: var(--dark-grey);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-left">
+                <div class="header-title">Service - Console</div>
+                <div class="tabs-container">
+                    <div class="tab active">
+                        <i class="fa-solid fa-table-cells"></i>
+                        Contact Center Wallboard
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="tab">
+                        <i class="fa-solid fa-phone"></i>
+                        VC-00000124
+                        <i class="fa-solid fa-xmark"></i>
+                    </div>
+                     <div class="tab">
+                        <i class="fa-solid fa-gear"></i>
+                        Video Accounts
+                        <i class="fa-solid fa-chevron-down"></i>
+                        <i class="fa-solid fa-xmark"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="search-bar">
+                    <i class="fa-solid fa-search"></i>
+                    <input type="text" placeholder="Search...">
+                </div>
+                <div class="header-icons">
+                    <i class="fa-regular fa-star"></i>
+                    <i class="fa-solid fa-plus"></i>
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <i class="fa-regular fa-circle-question"></i>
+                    <i class="fa-solid fa-gear"></i>
+                    <i class="fa-regular fa-bell"></i>
+                    <i class="fa-solid fa-user-circle"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- Sub Header -->
+        <div class="sub-header">
+            <div class="sub-header-top">
+                <div class="icon-wrapper"><i class="fa-solid fa-file-alt fa-lg"></i></div>
+                <h1>AC-SCV</h1>
+                <span class="id-text">a5b417fe-3db1-489c-abb9-96189f4eebcd • us-west-2</span>
+            </div>
+            <div class="sub-header-bottom">
+                <div class="controls-left">
+                    <div class="all-dropdown">
+                        <i class="fa-solid fa-list-check"></i>
+                        <span>All</span>
+                        <i class="fa-solid fa-chevron-down fa-xs"></i>
+                    </div>
+                    <i class="fa-solid fa-thumbtack" style="color: var(--medium-grey)"></i>
+                </div>
+                <div class="controls-right">
+                    <button class="btn">Choose Contact Center</button>
+                    <div class="view-controls">
+                        <button class="active"><i class="fa-solid fa-table-cells-large"></i></button>
+                        <button><i class="fa-solid fa-list"></i></button>
+                    </div>
+                    <div class="action-icons">
+                         <i class="fa-solid fa-gear"></i>
+                         <i class="fa-solid fa-rotate-right"></i>
+                         <i class="fa-solid fa-circle-info"></i>
+                    </div>
+                    <div class="dropdown-filter">
+                        All Queues <i class="fa-solid fa-chevron-down fa-xs"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <main class="content-area">
+            <div class="dashboard-grid">
+
+                <div class="tile">
+                    <span class="tag tag-realtime">Real-time</span>
+                    <div class="tile-title">Active Calls</div>
+                    <div class="tile-value">24</div>
+                </div>
+
+                <div class="tile">
+                    <span class="tag tag-realtime">Real-time</span>
+                    <div class="tile-title">Agents Available</div>
+                    <div class="tile-value">3</div>
+                </div>
+
+                <div class="tile">
+                    <span class="tag tag-realtime">Real-time</span>
+                    <div class="tile-title">Agents on break</div>
+                    <div class="tile-value">2</div>
+                </div>
+
+                <div class="tile">
+                    <span class="tag tag-realtime">Real-time</span>
+                    <div class="tile-title">Agents On Contact</div>
+                    <div class="tile-value">24</div>
+                </div>
+
+                <div class="tile">
+                    <span class="tag tag-realtime">Real-time</span>
+                    <div class="tile-title">Agents Online</div>
+                    <div class="tile-value">29</div>
+                </div>
+
+                <div class="tile">
+                    <span class="tag tag-realtime">Real-time</span>
+                    <div class="tile-title">Agents Staffed</div>
+                    <div class="tile-value">31</div>
+                </div>
+
+                <div class="tile">
+                    <span class="tag tag-realtime">Real-time</span>
+                    <div class="tile-title">Current Wait Time</div>
+                    <div class="tile-value">00:02:45</div>
+                </div>
+
+                <div class="tile">
+                    <span class="tag tag-realtime">Real-time</span>
+                    <div class="tile-title">Total Calls in Queue</div>
+                    <div class="tile-value">12</div>
+                </div>
+
+                <div class="tile">
+                    <span class="tag tag-historical">Historical</span>
+                    <div class="tile-title">% Occupancy</div>
+                    <div class="tile-value">82</div>
+                </div>
+
+                <div class="tile">
+                    <span class="tag tag-historical">Historical</span>
+                    <div class="tile-title">Average Abandon Time</div>
+                    <div class="tile-value">00:01:12</div>
+                </div>
+                
+                <div class="tile">
+                    <span class="tag tag-historical">Historical</span>
+                    <div class="tile-title">Average Handle Time</div>
+                    <div class="tile-value">00:06:58</div>
+                </div>
+
+                <div class="tile">
+                    <span class="tag tag-historical">Historical</span>
+                    <div class="tile-title">Average Hold Time</div>
+                    <div class="tile-value">00:00:45</div>
+                </div>
+
+                <div class="tile">
+                    <span class="tag tag-historical">Historical</span>
+                    <div class="tile-title">Average Interaction Time</div>
+                    <div class="tile-value">00:05:22</div>
+                </div>
+
+                <div class="tile">
+                    <span class="tag tag-historical">Historical</span>
+                    <div class="tile-title">Average Queue Answer Time</div>
+                    <div class="tile-value">00:00:55</div>
+                </div>
+                
+                <div class="tile">
+                    <span class="tag tag-historical">Historical</span>
+                    <div class="tile-title">Contacts Hung up from Agent</div>
+                    <div class="tile-value">3</div>
+                </div>
+
+                <div class="tile">
+                    <span class="tag tag-historical">Historical</span>
+                    <div class="tile-title">Contacts Missed</div>
+                    <div class="tile-value">8</div>
+                </div>
+                
+                <div class="tile">
+                    <span class="tag tag-historical">Historical</span>
+                    <div class="tile-title">Contacts Queued</div>
+                    <div class="tile-value">178</div>
+                </div>
+                
+                <div class="tile">
+                    <span class="tag tag-historical">Historical</span>
+                    <div class="tile-title">Incoming Contacts Handled</div>
+                    <div class="tile-value">152</div>
+                </div>
+                
+                <div class="tile">
+                    <span class="tag tag-historical">Historical</span>
+                    <div class="tile-title">Interaction and Hold Time</div>
+                    <div class="tile-value">00:06:07</div>
+                </div>
+
+                <div class="tile">
+                    <span class="tag tag-historical">Historical</span>
+                    <div class="tile-title">Outbound Contacts Handled</div>
+                    <div class="tile-value">21</div>
+                </div>
+
+                <div class="tile">
+                    <span class="tag tag-historical">Historical</span>
+                    <div class="tile-title">Total Calls Abandoned</div>
+                    <div class="tile-value">15</div>
+                </div>
+
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <div class="footer-item"><i class="fa-solid fa-phone"></i> Phone</div>
+            <div class="footer-item"><i class="fa-solid fa-users"></i> Omni-Channel</div>
+            <div class="footer-item"><i class="fa-solid fa-bolt"></i> Agent Wallboard</div>
+            <div class="footer-item"><i class="fa-solid fa-angles-right"></i> Macros</div>
+            <div class="footer-item"><i class="fa-solid fa-bolt"></i> Recent Items</div>
+            <div class="footer-item"><i class="fa-solid fa-angles-right"></i> Rewind</div>
+            <div class="footer-item"><i class="fa-solid fa-bolt"></i> Tool - Q Demo Tracker</div>
+        </footer>
+    </div>
+
+</body>
+</html>
